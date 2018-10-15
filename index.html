@@ -1,4 +1,192 @@
 <!DOCTYPE html>
-<html>
-Testing
+
+<html lang="he" dir="rtl">
+
+	<head>
+		<title>
+			חישוב שינוי משקל של תינוקות בין תאריכים
+		</title>
+		<link rel="stylesheet" href="style.css">
+		<script src="calc.js"></script>
+		<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+		<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+	</head>
+	
+	<body>
+
+		<div id="wrapper">
+		
+			<p id="testing"></p>
+		
+			<h1>
+				חישוב שינוי משקל של תינוקות בין תאריכים
+			</h1>
+			
+			<div id="input-area">
+						
+				<form id="input-form">
+					
+					<table id="date-weight-input">
+						<tr>
+							<td>
+								בחירת תקופה:
+							</td>
+							<td>
+							<input type="text" name="dates" value="" />
+
+							<script type="text/javascript">
+								$(function() {
+										$('input[name="dates"]').daterangepicker({
+										"showDropdowns": true,
+										"autoApply": true,
+										"autoUpdateInput": true,
+										"locale": {
+											"format": "DD/MM/YYYY",
+											"separator": " עד ",
+											"sapplyLabel": "Apply",
+											"cancelLabel": "Cancel",
+											"fromLabel": "From",
+											"toLabel": "To",
+											"customRangeLabel": "Custom",
+											"weekLabel": "W",
+											"daysOfWeek": [
+												"א",
+												"ב",
+												"ג",
+												"ד",
+												"ה",
+												"ו",
+												"ש"
+											],
+											"monthNames": [
+												"ינואר",
+												"פברואר",
+												"מרץ",
+												"אפריל",
+												"מאי",
+												"יוני",
+												"יולי",
+												"אוגוסט",
+												"ספטכבר",
+												"אוקטובר",
+												"נובמבר",
+												"דצמבר"
+											],
+											"firstDay": 0,
+											cancelLabel: 'מחק'
+										},
+										"alwaysShowCalendars": true,
+										//"startDate": "01/01/2018",
+										//"endDate": "02/02/2018",
+										"maxDate": new Date(),
+										"opens": "left"
+									}, function(start, end, label) {
+									  console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
+									  numDays = Math.floor((end - start) / (1000*60*60*24));
+									  if (numDays==1) {
+										document.getElementById("num-days").innerHTML = "1 יום";
+									  }
+									  else {
+										document.getElementById("num-days").innerHTML = numDays + " ימים";
+									  }
+									  calculateValues();
+									  
+									});
+								});
+								//document.getElementById("input-form").reset();
+								//$('#dates').val('');
+								//document.getElementById("clear-button").click();
+								/*
+								$('input[name="datefilter"]').on('apply.daterangepicker', function(ev, picker) {
+									$(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+								});
+								
+								$('input[name="datefilter"]').on('cancel.daterangepicker', function(ev, picker) {
+									$(this).val('');
+								});
+								*/
+							</script>
+							
+							</td>
+						</tr>
+						<tr>
+							<td>
+								משקל התחלתי:
+							</td>
+							<td>
+								<input type="text" id="weight1-input" size="5" oninput="weightInputChange()">
+								<select id="weight1-units" onchange="adjustWeightInputUnits()">
+									<option value="kg">ק"ג</option>
+									<option value="g">ג'</option>
+								</select>
+								<span id="weight1-error" class="error"></span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								משקל סופי:
+							</td>
+							<td>
+								<input type="text" id="weight2-input" size="5" oninput="weightInputChange()">
+								<select id="weight2-units" onchange="adjustWeightInputUnits()">
+									<option value="kg">ק"ג</option>
+									<option value="g">ג'</option>
+								</select>
+								<span id="weight2-error" class="error"></span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+							</td>
+							<td>
+								<input id="clear-button" type="reset" value="מחק">
+							</td>
+						</tr>
+					</table>
+			
+					
+					
+				</form>
+			
+			</div>
+			
+			<hr>
+			
+			<p>
+				<span class="label">אורך התקופה:</span></span>
+				<span id="num-days" class="result"></span>
+				
+			<p>
+				<span class="label">שינוי במשקל:</span>
+				<span id="weight-change" class="result"></span>
+			</p>
+					
+			<hr>
+			
+			<h2>
+				שינוי במשקל (בממוצע)...
+			</h2>
+			
+			<p>
+				<span class="label">... לכל יום:</span>
+				<span id="daily-average" class="result"></span>
+			</p>
+
+			<p>
+				<span class="label">... לכל שבוע:</span>
+				<span id="weekly-average" class="result"></span>
+			</p>
+			
+			<p>
+				<span class="label">... לכל חודש:</span>
+				<span id="monthly-average" class="result"></span>
+			</p>
+	
+			<img src="baby.jpg" width="400" id="baby">
+	
+		</div>
+
+	</body>
 </html>
